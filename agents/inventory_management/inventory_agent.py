@@ -107,7 +107,6 @@ inventory_agent = Agent(
         get_stock_quantity,
         dp.predict_demand,
         is_demand_greater,
-        get_supplier_email_id,
     ],
     instructions=[#"You are a store owner that needs to place orders for supplies from the supplier.",
         "You need to predict demand for all the items in the store using the 'predict demand' tool.",
@@ -118,7 +117,7 @@ inventory_agent = Agent(
         "Restructure the item id, available stock quantity values and predicted demand values into a json format. Also include the required quantity as the difference between demand and stock."
         "For each of the 10 item IDs compare available stock and predicted demand value obtained from previous tool calls using 'is_demand_greater' tool. If demand is found to be greater than stock available, display it.",
         
-        "For items where demand exceeds stock, retrieve the supplier email ID using the 'get_supplier_email_id' tool.",
+        #"For items where demand exceeds stock, retrieve the supplier email ID using the 'get_supplier_email_id' tool.",
         #"Consolidate orders by supplier email ID, listing item IDs and required quantities.",
         #"For each supplier, send an order email using the 'send_email' tool."
         ],
@@ -130,40 +129,45 @@ inventory_agent = Agent(
 )
 
 
-""" order_placer_agent = Agent(
-    name="Order Placer Agent",
+email_agent = Agent(
+    name="Email Retreiver Agent",
     model=gemini_model,
     tools=[
+        get_supplier_email_id,
         em.send_email,
     ],
     instructions=[
+        "For the item_ids retrieve the supplier email ID using the 'get_supplier_email_id' tool and display them.",
         "Consolidate orders by supplier email ID, listing item IDs and required quantities.",
-        "For each supplier, send an order email using the 'send_email' tool."
+        "For each supplier, send an order email using the 'send_email' tool.",
     ],
     show_tool_calls=True,
     debug_mode=True,
     markdown=True,
 )
 
+
+
 orchestrator_agent = Agent(
     name="Orchestrator Agent",
     model=gemini_model,
-    tools=[
+    team=[
         inventory_agent,
-        order_placer_agent,
+        email_agent,
     ],
     instructions=[
-        "Use the Inventory Agent to predict demand for all items, get available stock, find requirement and retreive supplier email ids.",
-        "Pass the supplier email ids to the Order Placer Agent to place orders as necessary."
+        "Use the Inventory Agent to predict demand for all items, get available stock, find requirement.",
+        "Pass this data with item ids only where demand greater than stock to the Email Retreiver Agent in this format to retreive required supplier mail ids."
     ],
     show_tool_calls=True,
     debug_mode=True,
     markdown=True,
-) """
+    add_transfer_instructions=True,
+) 
 
 query = "Follow the instructions given"
 try:
-    response = inventory_agent.run(query)
+    response = orchestrator_agent.run(query)
     if response and hasattr(response, "content"):
         print(response)
     else:

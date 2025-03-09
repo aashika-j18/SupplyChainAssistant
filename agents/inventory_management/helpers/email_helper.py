@@ -13,7 +13,7 @@ SMTP_PORT = 587
 EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-def send_email(receiver_email:str, message:str) -> None:
+def send_email(receiver_email:str, message:str) -> str:
     """
     Use this function to send an email to the specified receiver with the given message as body.
 
@@ -43,7 +43,7 @@ def send_email(receiver_email:str, message:str) -> None:
         # Close server connection
         server.quit()
 
-        print(f"Email sent successfully to {receiver_email}")
+        return str({"response":f"Email sent successfully to {receiver_email}"})
     except Exception as e:
         print(f"Error sending email: {e}")
 
