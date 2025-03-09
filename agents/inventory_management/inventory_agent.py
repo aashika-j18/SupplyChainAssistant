@@ -118,7 +118,7 @@ inventory_agent = Agent(
         "Restructure the item id, available stock quantity values and predicted demand values into a json format. Also include the required quantity as the difference between demand and stock."
         "For each of the 10 item IDs compare available stock and predicted demand value obtained from previous tool calls using 'is_demand_greater' tool. If demand is found to be greater than stock available, display it.",
         
-        #"For items where demand exceeds stock, retrieve the supplier email ID using the 'get_supplier_email_id' tool.",
+        "For items where demand exceeds stock, retrieve the supplier email ID using the 'get_supplier_email_id' tool.",
         #"Consolidate orders by supplier email ID, listing item IDs and required quantities.",
         #"For each supplier, send an order email using the 'send_email' tool."
         ],

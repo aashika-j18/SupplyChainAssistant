@@ -5,3 +5,6 @@ duckduckgo-search
 streamlit
 duckdb
 python-dotenv
+psycopg2
+pandas
+prophet

@@ -17,7 +17,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 gemini_model = Gemini(id="gemini-1.5-flash")
 
 
-historical_data_path = Path('SupplyChainAssistant\data\cleaned_po_history_data.csv')
+historical_data_path = Path('data\cleaned_po_history_data.csv')  ###
 csv_tools = CsvTools(csvs=[historical_data_path])
 
 
@@ -38,7 +38,7 @@ negotiation_agent = Agent(
         "Try to bring down the price offered by showing statistics and competitive prices provided by other suppliers. These other suppliers should include mostly wholesale and not retail.",
         "Consider only Indian suppliers.",
         "If the price is already low, then mention about being happy to accept the offer."
-        "Always include data sources in your responses.",
+        "Always include sources as citations in your responses.",
         "Always tabulate data.",
         "Use search to perform all instructions",
         "Use a gentle tone always",
