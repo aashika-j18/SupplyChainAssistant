@@ -61,6 +61,15 @@ cd SupplyChainAssistant
 Create a .env file in the project root and add:
 ```sh
 GOOGLE_API_KEY=your-api-key
+
+DB_NAME=db-name
+DB_USER=db-user
+DB_PASSWORD=your-db-password
+DB_HOST=db-host
+DB_PORT=db-port
+
+EMAIL_SENDER=your-mail-id
+EMAIL_PASSWORD=your-app-password
 ```
 
 
@@ -70,10 +79,17 @@ Ensure python3 is installed and run the following:
 pip install -r requirements.txt  
 ```
 
-### **5. Run the negotiation agent chat interface:**
+### **5a. Run the negotiation agent chat interface:**
 
 ```sh
+cd agents\negotiation_agent
 python -m streamlit run negotiation_ui.py  
 ```
 
+### **5b. Run the inventory management agent:**
+
+```sh
+cd agents\inventory_management
+python inventory_agent.py
+```
 

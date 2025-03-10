@@ -8,3 +8,5 @@ python-dotenv
 psycopg2
 pandas
 prophet
+googlesearch-python
+pycountry
