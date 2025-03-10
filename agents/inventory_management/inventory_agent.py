@@ -1,9 +1,6 @@
 import os
 from phi.agent import Agent
 from phi.model.google import Gemini
-from phi.tools.duckduckgo import DuckDuckGo
-from phi.tools.csv_tools import CsvTools
-from pathlib import Path
 
 import helpers.database_handler as db
 import helpers.demand_prediction as dp
@@ -103,12 +100,14 @@ inventory_agent = Agent(
     name="Inventory Management Agent",
     model=gemini_model,
     tools=[
-        #DuckDuckGo(),
         get_stock_quantity,
         dp.predict_demand,
         is_demand_greater,
+        get_supplier_email_id,
+        em.send_email,
     ],
-    instructions=[#"You are a store owner that needs to place orders for supplies from the supplier.",
+    instructions=[
+        "Use the tools available to you."
         "You need to predict demand for all the items in the store using the 'predict demand' tool.",
         "List of item IDs: [1,2,3,4,5,6,7,8,9,10].",
         "Provide the predicted demand values in a table format.", ##
@@ -117,9 +116,6 @@ inventory_agent = Agent(
         "Restructure the item id, available stock quantity values and predicted demand values into a json format. Also include the required quantity as the difference between demand and stock."
         "For each of the 10 item IDs compare available stock and predicted demand value obtained from previous tool calls using 'is_demand_greater' tool. If demand is found to be greater than stock available, display it.",
         
-        #"For items where demand exceeds stock, retrieve the supplier email ID using the 'get_supplier_email_id' tool.",
-        #"Consolidate orders by supplier email ID, listing item IDs and required quantities.",
-        #"For each supplier, send an order email using the 'send_email' tool."
         ],
 
     show_tool_calls=True,
@@ -137,7 +133,7 @@ email_agent = Agent(
         em.send_email,
     ],
     instructions=[
-        "For the item_ids retrieve the supplier email ID using the 'get_supplier_email_id' tool and display them.",
+        "For the item_ids where demand exceeds stock retrieve the supplier email ID using the 'get_supplier_email_id' tool and display them.",
         "Consolidate orders by supplier email ID, listing item IDs and required quantities.",
         "For each supplier, send an order email using the 'send_email' tool.",
     ],
@@ -148,32 +144,15 @@ email_agent = Agent(
 
 
 
-orchestrator_agent = Agent(
-    name="Orchestrator Agent",
-    model=gemini_model,
-    team=[
-        inventory_agent,
-        email_agent,
-    ],
-    instructions=[
-        "Use the Inventory Agent to predict demand for all items, get available stock, find requirement.",
-        "Pass this data with item ids only where demand greater than stock to the Email Retreiver Agent in this format to retreive required supplier mail ids."
-    ],
-    show_tool_calls=True,
-    debug_mode=True,
-    markdown=True,
-    add_transfer_instructions=True,
-) 
-
 query = "Follow the instructions given"
 try:
-    response = orchestrator_agent.run(query)
+    response = inventory_agent.run(query)
     if response and hasattr(response, "content"):
-        print(response)
+        pass
     else:
         print("Error: Response content is missing or invalid.")
 except Exception as e:
     print(f"Error occurred while running the agent: {e}")
 
-
-
+print("******************************************")
+print(email_agent.run(response.content))

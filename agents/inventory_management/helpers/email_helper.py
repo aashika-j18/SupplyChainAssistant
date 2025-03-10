@@ -25,22 +25,22 @@ def send_email(receiver_email:str, message:str) -> str:
         Exception: If an error occurs during the email sending process.
     """
     try:
-        # Create message
+        
         msg = MIMEMultipart()
         msg["From"] = EMAIL_SENDER
         msg["To"] = receiver_email
         msg["Subject"] = "Stock Order"
         msg.attach(MIMEText(message, "plain"))
 
-        # Connect to server
+        
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()  # Secure the connection
+        server.starttls()  
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
         
-        # Send email
+       
         server.sendmail(EMAIL_SENDER, receiver_email, msg.as_string())
         
-        # Close server connection
+        
         server.quit()
 
         return str({"response":f"Email sent successfully to {receiver_email}"})

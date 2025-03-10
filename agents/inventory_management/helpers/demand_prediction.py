@@ -4,7 +4,7 @@ from datetime import datetime
 import math
 import os
 
-MODEL_DIR = r"C:\Users\Aashi\Documents\Co-curricular\hackathons\ggh\SupplyChainAssistant\agents\inventory_management\helpers\prophet_models"
+MODEL_DIR = r"helpers/prophet_models"
 
 def predict_demand(item_id: int) -> dict:
     """
@@ -37,4 +37,6 @@ def predict_demand(item_id: int) -> dict:
     total_predicted_demand = math.ceil(next_30_days['predicted_demand'].sum())
 
     return  str({"predicted_demand": total_predicted_demand})
-    
+
+""" Change dir path to only 'prophet_models' to run this"""   
+#print(predict_demand(1))
