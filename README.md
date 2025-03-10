@@ -42,7 +42,9 @@ We introduce a **team of AI agents** to streamline supply chain operations:
 ## **Results**
 ![image](https://github.com/user-attachments/assets/5677b28d-6522-44c2-b6cb-95f464e0679c)
 
-### Link to view demo video: https://github.com/aashika-j18/SupplyChainAssistant/issues/1
+### Links to view demo videos: 
+Inventory Management Agent: https://drive.google.com/file/d/1G-GiGoMc-hx3BWf9bTm_yLkefBeD33az/view?usp=sharing <br>
+Negotiation Agent: https://drive.google.com/file/d/1HGayPyviJ-RgEfajc65NGgpvyU85KtQn/view?usp=sharing
 
 ---
 
